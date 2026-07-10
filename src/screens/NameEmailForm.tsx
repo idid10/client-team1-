@@ -3,6 +3,7 @@ import sprout from '../assets/sprout.png'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
 import { createUser, saveUserId } from '../lib/userApi'
+import { ApiError } from '../lib/api'
 
 interface Props {
   onNext: () => void
@@ -26,8 +27,8 @@ function NameEmailForm({ onNext }: Props) {
       const res = await createUser(name)
       saveUserId(res.data.userId)
       onNext()
-    } catch {
-      setError('가입에 실패했어요. 다시 시도해주세요.')
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : '가입에 실패했어요. 다시 시도해주세요.')
     } finally {
       setSubmitting(false)
     }
