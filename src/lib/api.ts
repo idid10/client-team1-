@@ -23,7 +23,7 @@ export function apiGet<TData>(path: string): Promise<ApiResponse<TData>> {
   return request<TData>(path)
 }
 
-export function apiPost<TData, TBody = undefined>(
+export function apiPost<TData, TBody = unknown>(
   path: string,
   body?: TBody,
 ): Promise<ApiResponse<TData>> {
@@ -34,7 +34,7 @@ export function apiPost<TData, TBody = undefined>(
   })
 }
 
-export function apiPatch<TData, TBody = undefined>(
+export function apiPatch<TData, TBody = unknown>(
   path: string,
   body?: TBody,
 ): Promise<ApiResponse<TData>> {
