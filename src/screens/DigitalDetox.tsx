@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import TimeCard, { type TimeValue } from "../components/TimeCard";
 import sprout from "../assets/sprout.png";
-import { scheduleDetoxStart } from "../lib/detoxSchedule";
+import { saveDetoxTimes, scheduleDetoxStart } from "../lib/detoxSchedule";
 
 export default function DigitalDetox() {
   const navigate = useNavigate();
@@ -67,6 +67,7 @@ export default function DigitalDetox() {
           active
           onClick={() => {
             scheduleDetoxStart(sleepTime);
+            saveDetoxTimes(sleepTime, wakeTime);
             navigate("/home");
           }}
         >
