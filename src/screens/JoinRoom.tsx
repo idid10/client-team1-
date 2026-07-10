@@ -5,10 +5,15 @@ const TEXT = {
   title: "\uCC38\uC5EC\uD558\uAE30",
   label: "\uCC38\uC5EC\uCF54\uB4DC",
   done: "\uC644\uB8CC",
+<<<<<<< HEAD
   invalidCode:
     "\uCD08\uB300 \uCF54\uB4DC\uB97C \uC798\uBABB \uC785\uB825\uD558\uC600\uC2B5\uB2C8\uB2E4.",
   memberFull:
     "\uCC38\uC5EC \uC778\uC6D0\uC744 \uCD08\uACFC\uD558\uC600\uC2B5\uB2C8\uB2E4.",
+=======
+  invalidCode: "\uCD08\uB300 \uCF54\uB4DC\uB97C \uC798\uBABB \uC785\uB825\uD558\uC600\uC2B5\uB2C8\uB2E4.",
+  memberFull: "\uCC38\uC5EC \uC778\uC6D0\uC744 \uCD08\uACFC\uD558\uC600\uC2B5\uB2C8\uB2E4.",
+>>>>>>> f65e8f19753e759f8bdc1868fd123e61285d70d1
 };
 
 type JoinRoomResult = "success" | "invalid" | "full";
@@ -16,6 +21,10 @@ type JoinRoomResult = "success" | "invalid" | "full";
 async function joinRoomByInviteCode(inviteCode: string): Promise<JoinRoomResult> {
   console.log("join room invite code:", inviteCode);
 
+<<<<<<< HEAD
+=======
+  // TODO: Replace this stub with the backend room join API.
+>>>>>>> f65e8f19753e759f8bdc1868fd123e61285d70d1
   return "success";
 }
 
@@ -57,9 +66,13 @@ export default function JoinRoom({ onBack }: JoinRoomProps) {
       </button>
 
       <main className="flex flex-1 flex-col px-4 pt-[1px]">
+<<<<<<< HEAD
         <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">
           {TEXT.title}
         </h1>
+=======
+        <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">{TEXT.title}</h1>
+>>>>>>> f65e8f19753e759f8bdc1868fd123e61285d70d1
 
         <label className="mt-[32px] text-[17px] font-semibold leading-[135%] text-[#494949]">
           {TEXT.label}
