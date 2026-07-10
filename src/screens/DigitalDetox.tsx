@@ -18,11 +18,14 @@ export default function DigitalDetox() {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F8F8F8] px-6 pt-16 pb-8">
+      {/* 로고 */}
+      <div className="mx-auto flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#F7FBEF]">
       <img
-        src={sprout}
-        alt="sprout"
-        className="mx-auto h-20 w-20"
+      src={sprout}
+      alt="sprout"
+      className="h-[41px] w-[41px]"
       />
+      </div>
 
       <h1 className="mt-7 text-center font-['Pretendard'] text-[24px] font-bold leading-[135%] text-[#1F1F1F]">
       디지털 디톡스,
