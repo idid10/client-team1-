@@ -19,7 +19,7 @@ function DetoxActive() {
         07:00에 해제돼요.
       </p>
 
-      <div className="mt-7.25 w-full">
+      <div className="mt-7.25">
         <DetoxTeamCard
           members={[
             { name: '민지', status: '진행중' },

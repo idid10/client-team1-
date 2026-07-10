@@ -10,13 +10,13 @@ interface DetoxTeamCardProps {
 function DetoxTeamCard({ members }: DetoxTeamCardProps) {
   return (
     <div
-      className="flex w-full flex-col items-center justify-center gap-2.5 rounded-[14px] bg-white p-4"
+      className="flex w-57.25 flex-col items-center justify-center gap-2.5 rounded-[14px] bg-white p-4"
       style={{
         boxShadow:
           '0 16px 4px rgba(0,0,0,0), 0 10px 4px rgba(0,0,0,0.01), 0 6px 3px rgba(0,0,0,0.05), 0 3px 3px rgba(0,0,0,0.09), 0 1px 1px rgba(0,0,0,0.10)',
       }}
     >
-      <span className="rounded-xl bg-[#FFDADD] px-13.5 py-1 text-center font-['Pretendard'] text-[11px] font-bold leading-[135%] text-[#FF4755]">
+      <span className="whitespace-nowrap rounded-xl bg-[#FFDADD] px-4 py-1 text-center font-['Pretendard'] text-[11px] font-bold leading-[135%] text-[#FF4755]">
         팀원들과 함께 디톡스 중
       </span>
 
