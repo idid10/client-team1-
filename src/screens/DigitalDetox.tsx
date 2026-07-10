@@ -40,12 +40,6 @@ export default function DigitalDetox() {
       건강한 디지털 습관을 만들어보세요.
       </p>
 
-      <p className="mt-4 text-center text-[#B7B7B7]">
-        매일의 오프라인 일정을 설정하고
-        <br />
-        건강한 디지털 습관을 만들어보세요.
-      </p>
-
       <div className="mt-auto flex flex-col gap-4">
         <TimeCard
           icon="lower"
