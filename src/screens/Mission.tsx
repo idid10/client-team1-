@@ -6,18 +6,40 @@ import PhotoUpload from '../components/PhotoUpload'
 import Button from '../components/Button'
 import SecondaryButton from '../components/SecondaryButton'
 import toothbrush from '../assets/Toothbrush.svg'
+import { uploadImage } from '../lib/imageUpload'
 
 function Mission() {
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
+  const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
 
   const openPicker = () => inputRef.current?.click()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setPreview(URL.createObjectURL(file))
+    const selected = e.target.files?.[0]
+    if (!selected) return
+    setFile(selected)
+    setUploadError(null)
+    setPreview(URL.createObjectURL(selected))
+  }
+
+  const handleUpload = async () => {
+    if (!file || uploading) return
+
+    setUploading(true)
+    setUploadError(null)
+
+    try {
+      await uploadImage(file)
+      navigate('/detox-active')
+    } catch {
+      setUploadError('업로드에 실패했어요. 다시 시도해주세요.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   return (
@@ -46,16 +68,17 @@ function Mission() {
           onClick={openPicker}
           onChange={handleChange}
         />
+
+        {uploadError && (
+          <p className="mx-4 text-center text-sm text-[#FF4755]">{uploadError}</p>
+        )}
       </div>
 
       <div className="mx-4 mt-auto flex gap-2.5 pb-8">
         <SecondaryButton onClick={openPicker}>다시 찍기</SecondaryButton>
         <div className="flex-1">
-          <Button
-            active={preview !== null}
-            onClick={() => navigate('/detox-active')}
-          >
-            업로드
+          <Button active={file !== null && !uploading} onClick={handleUpload}>
+            {uploading ? '업로드 중...' : '업로드'}
           </Button>
         </div>
       </div>
