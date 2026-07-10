@@ -2,6 +2,7 @@ import { useState } from 'react'
 import sprout from '../assets/sprout.png'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
+import { createUser, saveUserId } from '../lib/userApi'
 
 interface Props {
   onNext: () => void
@@ -10,8 +11,27 @@ interface Props {
 function NameEmailForm({ onNext }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const active = name.trim() !== '' && email.trim() !== ''
+  const active = name.trim() !== '' && email.trim() !== '' && !submitting
+
+  const handleNext = async () => {
+    if (!active) return
+
+    setSubmitting(true)
+    setError(null)
+
+    try {
+      const res = await createUser(name)
+      saveUserId(res.data.userId)
+      onNext()
+    } catch {
+      setError('가입에 실패했어요. 다시 시도해주세요.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-14 pb-8">
@@ -20,7 +40,7 @@ function NameEmailForm({ onNext }: Props) {
       </div>
 
       <h1 className="mt-7 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
-        잠금 어플, 
+        잠금 어플,
         <br />
         또 지워버렸나요?
       </h1>
@@ -49,8 +69,10 @@ function NameEmailForm({ onNext }: Props) {
           type="email"
         />
 
-        <Button active={active} onClick={onNext}>
-          다음
+        {error && <p className="text-center text-sm text-[#FF4755]">{error}</p>}
+
+        <Button active={active} onClick={handleNext}>
+          {submitting ? '가입 중...' : '다음'}
         </Button>
       </div>
     </div>
