@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import TimeCard, { type TimeValue } from "../components/TimeCard";
 import sprout from "../assets/sprout.png";
+import { scheduleDetoxStart } from "../lib/detoxSchedule";
 
 export default function DigitalDetox() {
+  const navigate = useNavigate();
+
   const [sleepTime, setSleepTime] = useState<TimeValue>({
     period: "오후",
     hour: 9,
@@ -59,7 +63,13 @@ export default function DigitalDetox() {
       </div>
 
       <div className="mt-8.5">
-        <Button active>
+        <Button
+          active
+          onClick={() => {
+            scheduleDetoxStart(sleepTime);
+            navigate("/home");
+          }}
+        >
           디지털 디톡스 시작하기
         </Button>
       </div>
