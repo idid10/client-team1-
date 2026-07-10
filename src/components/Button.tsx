@@ -19,3 +19,4 @@ function Button({ active = false, className = '', children, ...rest }: ButtonPro
 }
 
 export default Button
+
