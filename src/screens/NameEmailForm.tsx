@@ -14,7 +14,7 @@ function NameEmailForm({ onNext }: Props) {
   const active = name.trim() !== "" && email.trim() !== "";
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-white px-6 pt-14 pb-8">
+    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-14 pb-8">
 
       {/* 로고 */}
       <div className="mx-auto flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#F7FBEF]">
@@ -46,7 +46,7 @@ function NameEmailForm({ onNext }: Props) {
           name="name"
           value={name}
           onChange={setName}
-          placeholder="메시지 입력"
+          placeholder="이름을 입력해주세요"
         />
 
         <InputField

@@ -17,7 +17,7 @@ export default function DigitalDetox() {
   });
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F8F8F8] px-6 pt-16 pb-8">
+    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-16 pb-8">
       {/* 로고 */}
       <div className="mx-auto flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#F7FBEF]">
       <img
