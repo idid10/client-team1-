@@ -1,12 +1,20 @@
 import { apiGet, apiPatch, apiPost } from './api'
 
+/**
+ * ASSIGNED: 미션이 배정됐지만 아직 확인/인증 전
+ * CONFIRMED: 사용자가 미션 확인 버튼을 누른 상태
+ * SUCCESS: 인증 사진 등록을 완료한 상태
+ * FAILED: 10분 제한 시간을 초과해 실패한 상태
+ */
+export type MissionStatusValue = 'ASSIGNED' | 'CONFIRMED' | 'SUCCESS' | 'FAILED'
+
 export interface TodayMission {
   missionLogId: number
   missionId: number
   title: string
   difficulty: string
   targetDate: string
-  status: string
+  status: MissionStatusValue
   assignedAt: string
   popupShownAt: string | null
   deadlineAt: string
@@ -15,7 +23,7 @@ export interface TodayMission {
 
 export interface MissionCertification {
   missionLogId: number
-  status: string
+  status: MissionStatusValue
   imageUrl: string
   completedAt: string
   detoxEndTime: string
@@ -28,14 +36,14 @@ export interface MissionRecertification extends MissionCertification {
 
 export interface MissionConfirmResult {
   missionLogId: number
-  status: string
+  status: MissionStatusValue
   deadlineAt: string
   remainingSeconds: number
 }
 
 export interface MissionPopupShownResult {
   missionLogId: number
-  status: string
+  status: MissionStatusValue
   popupShownAt: string
   deadlineAt: string
   remainingSeconds: number
@@ -44,7 +52,7 @@ export interface MissionPopupShownResult {
 
 export interface MissionStatus {
   missionLogId: number
-  status: string
+  status: MissionStatusValue
   popupRequired: boolean
   popupShownAt: string | null
   assignedAt: string

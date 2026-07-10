@@ -30,8 +30,8 @@ function Mission() {
       .then((res) => {
         if (cancelled) return
         setTitle(res.data.title)
-        // status가 처음 배정 상태(ASSIGNED)가 아니면 이미 인증 사진을 등록한 적이 있다고 판단
-        setHasCertifiedBefore(res.data.status !== 'ASSIGNED')
+        // SUCCESS면 이미 인증 사진을 등록한 적이 있다는 뜻이라 재등록(PATCH)으로 전환
+        setHasCertifiedBefore(res.data.status === 'SUCCESS')
       })
       .catch(() => {
         // 조회 실패 시 기본 문구를 그대로 사용
