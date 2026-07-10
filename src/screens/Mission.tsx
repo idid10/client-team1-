@@ -1,4 +1,5 @@
 import { useRef, useState, type ChangeEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import MissionHeader from '../components/MissionHeader'
 import MissionCard from '../components/MissionCard'
 import PhotoUpload from '../components/PhotoUpload'
@@ -7,6 +8,7 @@ import SecondaryButton from '../components/SecondaryButton'
 import toothbrush from '../assets/Toothbrush.svg'
 
 function Mission() {
+  const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
 
@@ -36,7 +38,6 @@ function Mission() {
               완료한 순간을 사진으로 남겨주세요!
             </>
           }
-          timer="09:40"
         />
 
         <PhotoUpload
@@ -50,7 +51,12 @@ function Mission() {
       <div className="mx-4 mt-auto flex gap-2.5 pb-8">
         <SecondaryButton onClick={openPicker}>다시 찍기</SecondaryButton>
         <div className="flex-1">
-          <Button active={preview !== null}>업로드</Button>
+          <Button
+            active={preview !== null}
+            onClick={() => navigate('/detox-active')}
+          >
+            업로드
+          </Button>
         </div>
       </div>
     </div>

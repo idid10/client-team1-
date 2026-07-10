@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import NameEmailForm from './screens/NameEmailForm'
 import DigitalDetox from './screens/DigitalDetox'
 import Mission from './screens/Mission'
+import DetoxActive from './screens/DetoxActive'
 
 type Step = 'form' | 'detox'
 
@@ -21,6 +22,7 @@ function App() {
     <Routes>
       <Route path="/" element={<OnboardingFlow />} />
       <Route path="/mission" element={<Mission />} />
+      <Route path="/detox-active" element={<DetoxActive />} />
     </Routes>
   )
 }
