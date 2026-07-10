@@ -41,7 +41,6 @@ function NameEmailForm({ onNext }: Props) {
 
       {/* 입력 영역 */}
       <div className="mt-auto flex flex-col gap-6">
-
         <InputField
           label="이름"
           name="name"
@@ -64,8 +63,8 @@ function NameEmailForm({ onNext }: Props) {
         >
           다음
         </Button>
-
       </div>
+
     </div>
   );
 }

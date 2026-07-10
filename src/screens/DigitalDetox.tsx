@@ -4,31 +4,30 @@ import TimeCard, { type TimeValue } from "../components/TimeCard";
 import sprout from "../assets/sprout.png";
 
 export default function DigitalDetox() {
-
   const [sleepTime, setSleepTime] = useState<TimeValue>({
-  period: "오후",
-  hour: 9,
-  minute: 0,
-});
+    period: "오후",
+    hour: 9,
+    minute: 0,
+  });
 
-const [wakeTime, setWakeTime] = useState<TimeValue>({
-  period: "오전",
-  hour: 9,
-  minute: 0,
-});
+  const [wakeTime, setWakeTime] = useState<TimeValue>({
+    period: "오전",
+    hour: 9,
+    minute: 0,
+  });
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F8F8F8] px-6 pt-16 pb-8">
-
       <img
         src={sprout}
+        alt="sprout"
         className="mx-auto h-20 w-20"
       />
 
-      <h1 className="mt-7 text-center text-[34px] font-bold text-[#494949]">
-        디지털 디톡스,
-        <br />
-        언제 시작할까요?
+      <h1 className="mt-7 text-center font-['Pretendard'] text-[24px] font-bold leading-[135%] text-[#1F1F1F]">
+      디지털 디톡스,
+      <br />
+      언제 시작할까요?
       </h1>
 
       <p className="mt-4 text-center text-[#B7B7B7]">
@@ -38,7 +37,6 @@ const [wakeTime, setWakeTime] = useState<TimeValue>({
       </p>
 
       <div className="mt-10 flex flex-col gap-4">
-
         <TimeCard
           icon="lower"
           label="폰을 내려놓는 시간"
@@ -52,7 +50,6 @@ const [wakeTime, setWakeTime] = useState<TimeValue>({
           value={wakeTime}
           onChange={setWakeTime}
         />
-
       </div>
 
       <div className="mt-auto">
@@ -60,7 +57,6 @@ const [wakeTime, setWakeTime] = useState<TimeValue>({
           디지털 디톡스 시작하기
         </Button>
       </div>
-
     </div>
   );
 }
