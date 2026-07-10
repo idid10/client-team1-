@@ -46,7 +46,7 @@ function NameEmailForm({ onNext }: Props) {
           name="name"
           value={name}
           onChange={setName}
-          placeholder="메시지 입력"
+          placeholder="이름을 입력해주세요"
         />
 
         <InputField
