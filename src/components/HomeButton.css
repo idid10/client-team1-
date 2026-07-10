@@ -1,0 +1,28 @@
+.home-button {
+  display: flex;
+  width: 390px;
+  height: 64px;
+  padding: 4px 0;
+  justify-content: center;
+  align-items: center;
+
+  border-top: 1px solid rgba(97, 97, 97, 0.08);
+  background: #00cf76;
+
+  flex-shrink: 0;
+}
+
+.home-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.home-button-content span {
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 135%;
+}
