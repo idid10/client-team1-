@@ -1,30 +1,22 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import NameEmailForm from './screens/NameEmailForm'
 import DigitalDetox from './screens/DigitalDetox'
-import Mission from './screens/Mission'
-import DetoxActive from './screens/DetoxActive'
+import Home from './screens/Home'
+import NameEmailForm from './screens/NameEmailForm'
 
-type Step = 'form' | 'detox'
+type Step = 'form' | 'detox' | 'home'
 
-function OnboardingFlow() {
+function App() {
   const [step, setStep] = useState<Step>('form')
 
   if (step === 'detox') {
-    return <DigitalDetox />
+    return <DigitalDetox onNext={() => setStep('home')} />
+  }
+
+  if (step === 'home') {
+    return <Home />
   }
 
   return <NameEmailForm onNext={() => setStep('detox')} />
-}
-
-function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<OnboardingFlow />} />
-      <Route path="/mission" element={<Mission />} />
-      <Route path="/detox-active" element={<DetoxActive />} />
-    </Routes>
-  )
 }
 
 export default App

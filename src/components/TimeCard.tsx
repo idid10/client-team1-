@@ -34,8 +34,8 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
 
   useEffect(() => {
     if (!editing) return
-    const handlePointerDownOutside = (e: PointerEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+    const handlePointerDownOutside = (event: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setEditing(false)
       }
     }
@@ -55,7 +55,7 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
           style={{ background: bg }}
         >
           {icon === 'lower' ? (
-            <svg width="10" height="10" viewBox="0 0 10 10" fill={fg}>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill={fg} aria-hidden="true">
               <path d="M0 0 L10 5 L0 10 Z" />
             </svg>
           ) : (
@@ -72,29 +72,29 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
       </span>
 
       {editing ? (
-        <div className="flex items-center gap-3.75">
+        <div className="flex items-center gap-[15px]">
           <WheelColumn
             items={PERIODS}
             index={PERIODS.indexOf(value.period)}
-            onSelect={(i) => onChange({ ...value, period: PERIODS[i] })}
+            onSelect={(index) => onChange({ ...value, period: PERIODS[index] })}
             width={52}
           />
           <span className="font-['Pretendard'] text-[30px] font-bold leading-[135%] text-[#494949]">
             :
           </span>
           <WheelColumn
-            items={HOURS.map((h) => String(h).padStart(2, '0'))}
+            items={HOURS.map((hour) => String(hour).padStart(2, '0'))}
             index={value.hour - 1}
-            onSelect={(i) => onChange({ ...value, hour: HOURS[i] })}
+            onSelect={(index) => onChange({ ...value, hour: HOURS[index] })}
             width={40}
           />
           <span className="font-['Pretendard'] text-[30px] font-bold leading-[135%] text-[#494949]">
             :
           </span>
           <WheelColumn
-            items={MINUTES.map((m) => String(m).padStart(2, '0'))}
+            items={MINUTES.map((minute) => String(minute).padStart(2, '0'))}
             index={value.minute}
-            onSelect={(i) => onChange({ ...value, minute: MINUTES[i] })}
+            onSelect={(index) => onChange({ ...value, minute: MINUTES[index] })}
             width={40}
           />
         </div>
@@ -102,7 +102,7 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="flex items-center gap-3.75 font-['Pretendard'] text-[30px] font-bold leading-[135%] text-[#494949]"
+          className="flex items-center gap-[15px] font-['Pretendard'] text-[30px] font-bold leading-[135%] text-[#494949]"
         >
           <span>{value.period}</span>
           <span>:</span>
