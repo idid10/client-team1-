@@ -14,7 +14,7 @@ function NameEmailForm({ onNext }: Props) {
   const active = name.trim() !== "" && email.trim() !== "";
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-white px-6 pt-14 pb-8">
+    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-14 pb-8">
 
       {/* 로고 */}
       <div className="mx-auto flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#F7FBEF]">
@@ -26,7 +26,7 @@ function NameEmailForm({ onNext }: Props) {
       </div>
 
       {/* 제목 */}
-      <h1 className="mt-6 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
+      <h1 className="mt-7 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
         디지털 디톡스,
         <br />
         언제 시작할까요?
