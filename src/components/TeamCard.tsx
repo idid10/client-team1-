@@ -1,3 +1,6 @@
+import PixelCat from "./PixelCat";
+import TeamProgressBar from "./TeamProgressBar";
+
 interface Member {
   name: string;
   status: "done" | "progress" | "waiting";
@@ -5,9 +8,15 @@ interface Member {
 
 interface TeamCardProps {
   members: Member[];
+  current?: number;
+  total?: number;
 }
 
-export default function TeamCard({ members }: TeamCardProps) {
+export default function TeamCard({
+  members,
+  current = 124,
+  total = 150,
+}: TeamCardProps) {
   const statusStyle = {
     done: {
       border: "border-[#6BD27E]",
@@ -74,6 +83,15 @@ export default function TeamCard({ members }: TeamCardProps) {
             </div>
           );
         })}
+      </div>
+
+
+      <div className="mt-6 flex justify-center">
+        <PixelCat current={current} total={total} />
+      </div>
+
+      <div className="mt-4">
+        <TeamProgressBar current={current} total={total} />
       </div>
     </section>
   );

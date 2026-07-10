@@ -1,3 +1,5 @@
+import { getDeviceId } from './deviceId'
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export interface ApiResponse<T> {
@@ -9,11 +11,37 @@ export interface ApiResponse<T> {
   timestamp: string
 }
 
+export class ApiError extends Error {
+  status: number
+  code?: string
+  reasons?: Record<string, string>
+
+  constructor(message: string, status: number, code?: string, reasons?: Record<string, string>) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.code = code
+    this.reasons = reasons
+  }
+}
+
 async function request<TData>(path: string, init?: RequestInit): Promise<ApiResponse<TData>> {
-  const res = await fetch(`${API_BASE_URL}${path}`, init)
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers: {
+      'X-Device-Id': getDeviceId(),
+      ...init?.headers,
+    },
+  })
 
   if (!res.ok) {
-    throw new Error(`API request failed: ${res.status} ${res.statusText}`)
+    const body = await res.json().catch(() => null)
+    throw new ApiError(
+      body?.message ?? `API request failed: ${res.status} ${res.statusText}`,
+      res.status,
+      body?.code,
+      body?.reasons,
+    )
   }
 
   return res.json() as Promise<ApiResponse<TData>>
