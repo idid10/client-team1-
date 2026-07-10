@@ -38,7 +38,6 @@ function Mission() {
               완료한 순간을 사진으로 남겨주세요!
             </>
           }
-          timer="09:40"
         />
 
         <PhotoUpload

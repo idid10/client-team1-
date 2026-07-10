@@ -1,13 +1,40 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 
 interface MissionCardProps {
   icon: ReactNode
   title: string
   description: ReactNode
-  timer: string
+  durationSeconds?: number
 }
 
-function MissionCard({ icon, title, description, timer }: MissionCardProps) {
+function formatTime(seconds: number) {
+  const minutes = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+}
+
+function MissionCard({
+  icon,
+  title,
+  description,
+  durationSeconds = 600,
+}: MissionCardProps) {
+  const [remaining, setRemaining] = useState(durationSeconds)
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setRemaining((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(id)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => window.clearInterval(id)
+  }, [])
+
   return (
     <div
       className="mx-4 flex h-100.5 flex-col items-center justify-center gap-4 rounded-3xl border border-[#EFEFEF] bg-white px-6 py-8"
@@ -26,7 +53,7 @@ function MissionCard({ icon, title, description, timer }: MissionCardProps) {
       </p>
 
       <span className="rounded-xl bg-[#FFDADD] px-13.5 py-1 font-['Pretendard'] text-base font-semibold leading-[135%] text-[#FF4D6A]">
-        {timer}
+        {formatTime(remaining)}
       </span>
     </div>
   )
