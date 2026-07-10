@@ -1,7 +1,11 @@
 import { Bell, Plus } from "lucide-react";
 import sprout from "../assets/sprout.png";
 
-export default function TopBar() {
+interface TopBarProps {
+  onCreateRoom?: () => void;
+}
+
+export default function TopBar({ onCreateRoom }: TopBarProps) {
   return (
     <div className="flex flex-col gap-5">
 
@@ -19,7 +23,11 @@ export default function TopBar() {
             <Bell size={18} color="white" />
           </button>
 
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#494949]">
+          <button
+            type="button"
+            onClick={onCreateRoom}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#494949]"
+          >
             <Plus size={20} color="white" />
           </button>
         </div>
