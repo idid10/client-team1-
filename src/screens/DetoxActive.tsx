@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import handphone from '../assets/handphone.svg'
 import DetoxTeamCard from '../components/DetoxTeamCard'
 
@@ -17,7 +18,25 @@ function formatDetoxEndTime(raw: string) {
 
 function DetoxActive() {
   const location = useLocation()
+  const navigate = useNavigate()
   const detoxEndTime = (location.state as DetoxActiveState | null)?.detoxEndTime
+
+  useEffect(() => {
+    if (!detoxEndTime) return
+
+    const deadline = new Date(detoxEndTime).getTime()
+    if (Number.isNaN(deadline)) return
+
+    const checkDeadline = () => {
+      if (Date.now() >= deadline) {
+        navigate('/home')
+      }
+    }
+
+    checkDeadline()
+    const id = window.setInterval(checkDeadline, 1000)
+    return () => window.clearInterval(id)
+  }, [detoxEndTime, navigate])
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col items-center bg-[#00CF76] px-4 pt-41.75">

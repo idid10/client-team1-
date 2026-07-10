@@ -42,8 +42,7 @@ export default function Home() {
       imageUrl?: string | null;
     }[]
   >([]);
-  const [current, setCurrent] = useState(0);
-  // 스테이지별 목표치가 아직 명세되지 않아 임시로 150 고정 (확인 필요)
+  const [current, setCurrent] = useState(53);
   const total = 150;
   const [teamName, setTeamName] = useState<string | undefined>(undefined);
   const [failurePopup, setFailurePopup] = useState<string[] | null>(null);
@@ -64,7 +63,7 @@ export default function Home() {
         setSleepTime(fromApiTime(data.detoxStartTime));
         setWakeTime(fromApiTime(data.detoxEndTime));
         setMembers(toTeamCardMembers(data.members));
-        setCurrent(data.totalBricks);
+        // totalBricks는 서버가 아직 0만 내려줘서 임시로 53 고정
         setTeamName(data.selectedTeamName ?? undefined);
         if (data.popup.showPopup) {
           setFailurePopup(data.popup.failedMemberNames);
