@@ -12,6 +12,7 @@ import {
   registerMissionCertification,
   updateMissionCertification,
 } from '../lib/missionApi'
+import { saveDetoxEndTime } from '../lib/detoxSchedule'
 
 function Mission() {
   const navigate = useNavigate()
@@ -61,6 +62,7 @@ function Mission() {
         : await registerMissionCertification(file)
 
       setHasCertifiedBefore(true)
+      saveDetoxEndTime(certification.data.detoxEndTime)
       navigate('/detox-active', {
         state: { detoxEndTime: certification.data.detoxEndTime },
       })

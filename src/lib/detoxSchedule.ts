@@ -21,3 +21,18 @@ export function loadDetoxTimes(): DetoxTimes | null {
     return null
   }
 }
+
+const END_TIME_KEY = 'detoxEndTime'
+
+/** 새로고침해도 유지되도록 router state 대신 localStorage에도 저장 */
+export function saveDetoxEndTime(detoxEndTime: string) {
+  localStorage.setItem(END_TIME_KEY, detoxEndTime)
+}
+
+export function loadDetoxEndTime(): string | null {
+  return localStorage.getItem(END_TIME_KEY)
+}
+
+export function clearDetoxEndTime() {
+  localStorage.removeItem(END_TIME_KEY)
+}

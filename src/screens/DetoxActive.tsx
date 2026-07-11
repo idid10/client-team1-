@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import handphone from '../assets/handphone.svg'
 import DetoxTeamCard from '../components/DetoxTeamCard'
+import { clearDetoxEndTime, loadDetoxEndTime } from '../lib/detoxSchedule'
 
 interface DetoxActiveState {
   detoxEndTime?: string
@@ -19,7 +20,10 @@ function formatDetoxEndTime(raw: string) {
 function DetoxActive() {
   const location = useLocation()
   const navigate = useNavigate()
-  const detoxEndTime = (location.state as DetoxActiveState | null)?.detoxEndTime
+  const stateEndTime = (location.state as DetoxActiveState | null)?.detoxEndTime
+
+  // 새로고침 등으로 router state가 날아가도 localStorage에서 이어서 읽음
+  const [detoxEndTime] = useState(() => stateEndTime ?? loadDetoxEndTime() ?? undefined)
 
   useEffect(() => {
     if (!detoxEndTime) return
@@ -29,6 +33,7 @@ function DetoxActive() {
 
     const checkDeadline = () => {
       if (Date.now() >= deadline) {
+        clearDetoxEndTime()
         navigate('/home')
       }
     }
