@@ -1,6 +1,5 @@
 import PixelCastle from "./PixelCastle";
 import TeamProgressBar from "./TeamProgressBar";
-import defaultAvatar from "../assets/image.jpg";
 
 interface Member {
   name: string;
@@ -65,11 +64,13 @@ export default function TeamCard({
                 <div
                   className={`h-12 w-12 overflow-hidden rounded-2xl border ${style.border} ${style.bg}`}
                 >
-                  <img
-                    src={member.imageUrl || defaultAvatar}
-                    alt={member.name}
-                    className="h-full w-full object-cover"
-                  />
+                  {member.imageUrl && (
+                    <img
+                      src={member.imageUrl}
+                      alt={member.name}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
                 </div>
 
                 <div
