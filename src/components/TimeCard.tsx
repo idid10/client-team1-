@@ -1,65 +1,81 @@
-import { useEffect, useRef, useState } from 'react'
-import WheelColumn from './WheelColumn'
+import { useEffect, useRef, useState } from "react";
+import WheelColumn from "./WheelColumn";
 
-export type Period = '오전' | '오후'
+export type Period = "\uC624\uC804" | "\uC624\uD6C4";
 
 export interface TimeValue {
-  period: Period
-  hour: number
-  minute: number
+  period: Period;
+  hour: number;
+  minute: number;
 }
 
 interface TimeCardProps {
-  icon: 'lower' | 'raise'
-  label: string
-  value: TimeValue
-  onChange: (value: TimeValue) => void
+  icon: "lower" | "raise";
+  label: string;
+  value: TimeValue;
+  onChange: (value: TimeValue) => void;
 }
 
 const ICON_STYLE = {
-  lower: { bg: '#E8F9F0', fg: '#00CF76' },
-  raise: { bg: '#F0EAC5', fg: '#9B7A1A' },
-} as const
+  lower: { bg: "#E8F9F0", fg: "#00CF76" },
+  raise: { bg: "#F0EAC5", fg: "#9B7A1A" },
+} as const;
 
-const PERIODS: Period[] = ['오전', '오후']
-const HOURS = Array.from({ length: 12 }, (_, i) => i + 1)
-const MINUTES = Array.from({ length: 60 }, (_, i) => i)
+const PERIODS: Period[] = ["\uC624\uC804", "\uC624\uD6C4"];
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 
 function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
-  const [editing, setEditing] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { bg, fg } = ICON_STYLE[icon]
+  const [editing, setEditing] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { bg, fg } = ICON_STYLE[icon];
 
-  const summary = `${value.period} ${value.hour}:${String(value.minute).padStart(2, '0')}`
+  const summary = `${value.period} ${value.hour}:${String(value.minute).padStart(2, "0")}`;
 
   useEffect(() => {
-    if (!editing) return
+    if (!editing) return;
     const handlePointerDownOutside = (event: PointerEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setEditing(false)
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setEditing(false);
       }
-    }
-    document.addEventListener('pointerdown', handlePointerDownOutside)
-    return () => document.removeEventListener('pointerdown', handlePointerDownOutside)
-  }, [editing])
+    };
+    document.addEventListener("pointerdown", handlePointerDownOutside);
+    return () =>
+      document.removeEventListener("pointerdown", handlePointerDownOutside);
+  }, [editing]);
 
   return (
     <div
       ref={containerRef}
       className="flex w-full flex-col items-start rounded-[14px] bg-white px-5 py-4"
-      style={{ boxShadow: '0 3px 1px rgba(0,0,0,0.01), 0 1px 2px rgba(0,0,0,0.04)' }}
+      style={{
+        boxShadow:
+          "0 3px 1px rgba(0,0,0,0.01), 0 1px 2px rgba(0,0,0,0.04)",
+      }}
     >
       <div className="mb-2 flex items-center gap-2">
         <span
           className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
           style={{ background: bg }}
         >
-          {icon === 'lower' ? (
-            <svg width="10" height="10" viewBox="0 0 10 10" fill={fg} aria-hidden="true">
+          {icon === "lower" ? (
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill={fg}
+              aria-hidden="true"
+            >
               <path d="M0 0 L10 5 L0 10 Z" />
             </svg>
           ) : (
-            <span className="block h-2.5 w-2.5 rounded-[1px]" style={{ background: fg }} />
+            <span
+              className="block h-2.5 w-2.5 rounded-[1px]"
+              style={{ background: fg }}
+            />
           )}
         </span>
         <span className="font-['Pretendard'] text-xs font-semibold leading-[135%] text-[#9B9B9B]">
@@ -83,7 +99,7 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
             :
           </span>
           <WheelColumn
-            items={HOURS.map((hour) => String(hour).padStart(2, '0'))}
+            items={HOURS.map((hour) => String(hour).padStart(2, "0"))}
             index={value.hour - 1}
             onSelect={(index) => onChange({ ...value, hour: HOURS[index] })}
             width={40}
@@ -92,7 +108,7 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
             :
           </span>
           <WheelColumn
-            items={MINUTES.map((minute) => String(minute).padStart(2, '0'))}
+            items={MINUTES.map((minute) => String(minute).padStart(2, "0"))}
             index={value.minute}
             onSelect={(index) => onChange({ ...value, minute: MINUTES[index] })}
             width={40}
@@ -106,13 +122,13 @@ function TimeCard({ icon, label, value, onChange }: TimeCardProps) {
         >
           <span>{value.period}</span>
           <span>:</span>
-          <span>{String(value.hour).padStart(2, '0')}</span>
+          <span>{String(value.hour).padStart(2, "0")}</span>
           <span>:</span>
-          <span>{String(value.minute).padStart(2, '0')}</span>
+          <span>{String(value.minute).padStart(2, "0")}</span>
         </button>
       )}
     </div>
-  )
+  );
 }
 
-export default TimeCard
+export default TimeCard;

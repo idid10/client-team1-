@@ -1,21 +1,42 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { joinTeam, updateActiveTeam } from "../lib/teamApi";
 
 const TEXT = {
-  title: "\uCC38\uC5EC\uD558\uAE30",
-  label: "\uCC38\uC5EC\uCF54\uB4DC",
-  done: "\uC644\uB8CC",
-  invalidCode: "\uCD08\uB300 \uCF54\uB4DC\uB97C \uC798\uBABB \uC785\uB825\uD558\uC600\uC2B5\uB2C8\uB2E4.",
-  memberFull: "\uCC38\uC5EC \uC778\uC6D0\uC744 \uCD08\uACFC\uD558\uC600\uC2B5\uB2C8\uB2E4.",
+  title: "참여하기",
+  label: "참여코드",
+  done: "완료",
+  invalidCode: "초대 코드를 잘못 입력하였습니다.",
+  memberFull: "참여 인원을 초과하였습니다.",
 };
 
 type JoinRoomResult = "success" | "invalid" | "full";
 
-async function joinRoomByInviteCode(inviteCode: string): Promise<JoinRoomResult> {
-  console.log("join room invite code:", inviteCode);
+async function joinRoomByInviteCode(
+  inviteCode: string
+): Promise<JoinRoomResult> {
+  try {
+    const res = await joinTeam(inviteCode);
+    const team = res.data;
 
-  // TODO: Replace this stub with the backend room join API.
-  return "success";
+    await updateActiveTeam(team.teamId);
+
+    localStorage.setItem("teamId", String(team.teamId));
+
+    return "success";
+  } catch (err: any) {
+    console.error(err);
+
+    if (err?.status === 404) {
+      return "invalid";
+    }
+
+    if (err?.status === 409) {
+      return "full";
+    }
+
+    return "invalid";
+  }
 }
 
 interface JoinRoomProps {
@@ -26,6 +47,7 @@ export default function JoinRoom({ onBack }: JoinRoomProps) {
   const [joinCode, setJoinCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isActive = joinCode.trim().length > 0;
 
   const handleSubmit = async () => {
@@ -56,11 +78,14 @@ export default function JoinRoom({ onBack }: JoinRoomProps) {
       </button>
 
       <main className="flex flex-1 flex-col px-4 pt-[1px]">
-        <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">{TEXT.title}</h1>
+        <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">
+          {TEXT.title}
+        </h1>
 
         <label className="mt-[32px] text-[17px] font-semibold leading-[135%] text-[#494949]">
           {TEXT.label}
         </label>
+
         <input
           type="text"
           value={joinCode}
@@ -82,7 +107,6 @@ export default function JoinRoom({ onBack }: JoinRoomProps) {
         <button
           type="button"
           disabled={!isActive || isSubmitting}
-          data-active={isActive}
           onClick={async () => {
             setIsSubmitting(true);
             await handleSubmit();

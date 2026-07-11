@@ -6,35 +6,35 @@ import TimeSummary from "../components/TimeSummary";
 import EditDetoxTimesModal from "../components/EditDetoxTimesModal";
 import TeamFailurePopup from "../components/TeamFailurePopup";
 import { loadDetoxTimes, saveDetoxTimes } from "../lib/detoxSchedule";
-import { fromApiTime, updateDetoxTime } from "../lib/detoxTimeApi";
-import { getUserHome, getUserId, type HomeMember } from "../lib/userApi";
+import { updateDetoxTime } from "../lib/detoxTimeApi";
+import { getTeamDetail, type TeamMember } from "../lib/teamApi";
 import type { TimeValue } from "../components/TimeCard";
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
 
 const DEFAULT_SLEEP_TIME: TimeValue = {
-  period: "오후" as TimeValue["period"],
+  period: "오후",
   hour: 9,
   minute: 0,
 };
 
 const DEFAULT_WAKE_TIME: TimeValue = {
-  period: "오전" as TimeValue["period"],
+  period: "오전",
   hour: 9,
   minute: 0,
 };
 
-function toTeamCardMembers(members: HomeMember[]) {
+function toTeamCardMembers(members: TeamMember[]) {
   return members.map((member) => ({
     name: member.nickname,
-    status: (member.isSuccess ? "done" : "waiting") as "done" | "waiting",
-    imageUrl: member.imageUrl,
+    status: "waiting" as const,
   }));
 }
 
 export default function Home() {
   const [sleepTime, setSleepTime] = useState<TimeValue>(DEFAULT_SLEEP_TIME);
   const [wakeTime, setWakeTime] = useState<TimeValue>(DEFAULT_WAKE_TIME);
+
   const [members, setMembers] = useState<
     {
       name: string;
@@ -42,10 +42,13 @@ export default function Home() {
       imageUrl?: string | null;
     }[]
   >([]);
-  const current = 53;
+  const [current, setCurrent] = useState(0);
   const total = 150;
-  const [teamName, setTeamName] = useState<string | undefined>(undefined);
+
+  const [teamName, setTeamName] = useState<string>();
+
   const [failurePopup, setFailurePopup] = useState<string[] | null>(null);
+
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
   const [isJoiningRoom, setIsJoiningRoom] = useState(false);
   const [isRoomMenuOpen, setIsRoomMenuOpen] = useState(false);
@@ -53,27 +56,33 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
-    const userId = getUserId();
-    if (userId === null) return;
 
-    getUserHome(userId)
-      .then((res) => {
+    const teamId = Number(localStorage.getItem("teamId"));
+
+    if (!teamId) return;
+
+    getTeamDetail(teamId)
+      .then((response) => {
         if (cancelled) return;
-        const { data } = res;
-        setSleepTime(fromApiTime(data.detoxStartTime));
-        setWakeTime(fromApiTime(data.detoxEndTime));
+
+        const data = response.data;
         setMembers(toTeamCardMembers(data.members));
-        // totalBricks는 서버가 아직 0만 내려줘서 임시로 53 고정
-        setTeamName(data.selectedTeamName ?? undefined);
-        if (data.popup.showPopup) {
-          setFailurePopup(data.popup.failedMemberNames);
+        setCurrent(data.totalBricks);
+        setTeamName(data.teamName);
+
+        const stored = loadDetoxTimes();
+        if (stored) {
+          setSleepTime(stored.sleepTime);
+          setWakeTime(stored.wakeTime);
         }
       })
       .catch((err) => {
-        // 서버 조회 실패 시 로컬에 저장해둔 값을 대신 사용
-        console.error("getUserHome 실패:", err);
+        console.error("getTeamDetail 실패:", err);
+
         if (cancelled) return;
+
         const stored = loadDetoxTimes();
+
         if (stored) {
           setSleepTime(stored.sleepTime);
           setWakeTime(stored.wakeTime);
@@ -87,11 +96,11 @@ export default function Home() {
 
   const handleDone = async () => {
     saveDetoxTimes(sleepTime, wakeTime);
+
     try {
       await updateDetoxTime(sleepTime, wakeTime);
-    } catch {
-      // 서버 업데이트 실패해도 로컬엔 반영됐으니 모달은 닫음
-    }
+    } catch {}
+
     setIsEditing(false);
   };
 
@@ -120,9 +129,9 @@ export default function Home() {
                 setIsRoomMenuOpen(false);
                 setIsCreatingRoom(true);
               }}
-              className="inline-flex w-full items-center justify-start gap-2.5 bg-white px-2 py-2.5 text-left font-['Roboto'] text-xs font-semibold leading-4 text-[#00CF76]"
+              className="inline-flex w-full items-center justify-start gap-2.5 bg-white px-2 py-2.5 text-left text-xs font-semibold text-[#00CF76]"
             >
-              {"방만들기"}
+              방만들기
             </button>
 
             <button
@@ -131,9 +140,9 @@ export default function Home() {
                 setIsRoomMenuOpen(false);
                 setIsJoiningRoom(true);
               }}
-              className="inline-flex w-full items-center justify-start gap-2.5 bg-white px-2 py-2.5 text-left font-['Roboto'] text-xs font-semibold leading-4 text-[#992B33]"
+              className="inline-flex w-full items-center justify-start gap-2.5 bg-white px-2 py-2.5 text-left text-xs font-semibold text-[#992B33]"
             >
-              {"참여하기"}
+              참여하기
             </button>
           </div>
         )}

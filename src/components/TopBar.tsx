@@ -1,4 +1,4 @@
-import { Bell, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import sprout from "../assets/sprout.png";
 
 interface TopBarProps {
@@ -10,23 +10,20 @@ interface TopBarProps {
 export default function TopBar({
   onCreateRoom,
   teamName = "팀1",
-  memberCount,
+  memberCount = 4,
 }: TopBarProps) {
   return (
     <div className="flex flex-col gap-5">
-
       <div className="flex items-center justify-between">
         <div className="rounded-full bg-[#EAF8E8] px-3 py-1.5">
-          <span className="text-sm font-semibold text-[#62C46A]">{teamName}</span>
+          <span className="text-sm font-semibold text-[#62C46A]">
+            {teamName}
+          </span>
         </div>
 
         <div className="flex items-center gap-3">
           <button className="rounded-full bg-[#F3F3F3] px-3 py-1.5 text-sm font-medium">
-            {memberCount ?? 0}명
-          </button>
-
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#494949]">
-            <Bell size={18} color="white" />
+            {memberCount}명
           </button>
 
           <button
