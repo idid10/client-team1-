@@ -63,9 +63,10 @@ export default function Home() {
     if (!teamId) return;
 
     getTeamDetail(teamId)
-      .then((data) => {
+      .then((response) => {
         if (cancelled) return;
 
+        const data = response.data;
         setMembers(toTeamCardMembers(data.members));
         setCurrent(data.totalBricks);
         setTeamName(data.teamName);

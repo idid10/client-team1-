@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { joinTeam, updateActiveTeam } from "../lib/teamApi";
 
 const TEXT = {
   title: "참여하기",
@@ -14,10 +15,28 @@ type JoinRoomResult = "success" | "invalid" | "full";
 async function joinRoomByInviteCode(
   inviteCode: string
 ): Promise<JoinRoomResult> {
-  console.log("join room invite code:", inviteCode);
+  try {
+    const res = await joinTeam(inviteCode);
+    const team = res.data;
 
-  // TODO: Replace this stub with the backend room join API.
-  return "success";
+    await updateActiveTeam(team.teamId);
+
+    localStorage.setItem("teamId", String(team.teamId));
+
+    return "success";
+  } catch (err: any) {
+    console.error(err);
+
+    if (err?.status === 404) {
+      return "invalid";
+    }
+
+    if (err?.status === 409) {
+      return "full";
+    }
+
+    return "invalid";
+  }
 }
 
 interface JoinRoomProps {

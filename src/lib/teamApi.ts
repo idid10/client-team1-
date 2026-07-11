@@ -16,6 +16,11 @@ interface ActiveTeamRequest {
   teamId: number;
 }
 
+interface JoinTeamRequest {
+  userId: number;
+  inviteCode: string;
+}
+
 export interface TeamMember {
   userId: number;
   nickname: string;
@@ -56,6 +61,22 @@ export function updateActiveTeam(teamId: number) {
     `/api/users/${userId}/active-team`,
     {
       teamId,
+    }
+  );
+}
+
+export function joinTeam(inviteCode: string) {
+  const userId = getUserId();
+
+  if (userId === null) {
+    throw new Error("濡쒓렇?몄씠 ?꾩슂?⑸땲??");
+  }
+
+  return apiPost<CreateTeamData, JoinTeamRequest>(
+    "/api/teams/join",
+    {
+      userId,
+      inviteCode,
     }
   );
 }
