@@ -21,9 +21,19 @@ interface JoinTeamRequest {
   inviteCode: string;
 }
 
+interface UserTeamsData {
+  teams: TeamListItem[];
+}
+
 export interface TeamMember {
   userId: number;
   nickname: string;
+}
+
+export interface TeamListItem {
+  teamId: number;
+  teamName: string;
+  memberCount: number;
 }
 
 export interface TeamDetail {
@@ -79,6 +89,16 @@ export function joinTeam(inviteCode: string) {
       inviteCode,
     }
   );
+}
+
+export function getUserTeams() {
+  const userId = getUserId();
+
+  if (userId === null) {
+    throw new Error("濡쒓렇?몄씠 ?꾩슂?⑸땲??");
+  }
+
+  return apiGet<UserTeamsData>(`/api/users/${userId}/teams`);
 }
 
 export function getTeamDetail(teamId: number) {
