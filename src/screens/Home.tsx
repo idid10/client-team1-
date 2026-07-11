@@ -42,7 +42,7 @@ export default function Home() {
       imageUrl?: string | null;
     }[]
   >([]);
-  const [current, setCurrent] = useState(53);
+  const current = 53;
   const total = 150;
   const [teamName, setTeamName] = useState<string | undefined>(undefined);
   const [failurePopup, setFailurePopup] = useState<string[] | null>(null);
