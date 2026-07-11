@@ -34,6 +34,7 @@ export default function CreateRoom({ onBack }: CreateRoomProps) {
 
       await updateActiveTeam(team.teamId);
 
+      localStorage.setItem("teamId", String(team.teamId));
       setInviteCode(team.inviteCode);
       setIsComplete(true);
     } catch (err) {

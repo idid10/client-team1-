@@ -6,8 +6,8 @@ import TimeSummary from "../components/TimeSummary";
 import EditDetoxTimesModal from "../components/EditDetoxTimesModal";
 import TeamFailurePopup from "../components/TeamFailurePopup";
 import { loadDetoxTimes, saveDetoxTimes } from "../lib/detoxSchedule";
-import { fromApiTime, updateDetoxTime } from "../lib/detoxTimeApi";
-import { getUserHome, getUserId, type HomeMember } from "../lib/userApi";
+import { updateDetoxTime } from "../lib/detoxTimeApi";
+import { getTeamDetail, type TeamMember } from "../lib/teamApi";
 import type { TimeValue } from "../components/TimeCard";
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
@@ -24,14 +24,10 @@ const DEFAULT_WAKE_TIME: TimeValue = {
   minute: 0,
 };
 
-function toTeamCardMembers(members: HomeMember[]) {
+function toTeamCardMembers(members: TeamMember[]) {
   return members.map((member) => ({
     name: member.nickname,
-    status: (member.isSuccess ? "done" : "waiting") as
-      | "done"
-      | "progress"
-      | "waiting",
-    imageUrl: member.imageUrl,
+    status: "waiting" as const,
   }));
 }
 
@@ -62,27 +58,26 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
 
-    const userId = getUserId();
-    if (userId === null) return;
+    const teamId = Number(localStorage.getItem("teamId"));
 
-    getUserHome(userId)
-      .then((res) => {
+    if (!teamId) return;
+
+    getTeamDetail(teamId)
+      .then((data) => {
         if (cancelled) return;
 
-        const { data } = res;
-
-        setSleepTime(fromApiTime(data.detoxStartTime));
-        setWakeTime(fromApiTime(data.detoxEndTime));
         setMembers(toTeamCardMembers(data.members));
         setCurrent(data.totalBricks);
-        setTeamName(data.selectedTeamName ?? undefined);
+        setTeamName(data.teamName);
 
-        if (data.popup.showPopup) {
-          setFailurePopup(data.popup.failedMemberNames);
+        const stored = loadDetoxTimes();
+        if (stored) {
+          setSleepTime(stored.sleepTime);
+          setWakeTime(stored.wakeTime);
         }
       })
       .catch((err) => {
-        console.error("getUserHome 실패:", err);
+        console.error("getTeamDetail 실패:", err);
 
         if (cancelled) return;
 

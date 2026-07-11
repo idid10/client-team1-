@@ -1,4 +1,4 @@
-import { apiPatch, apiPost } from "./api";
+import { apiGet, apiPatch, apiPost } from "./api";
 import { getUserId } from "./userApi";
 
 interface CreateTeamRequest {
@@ -14,6 +14,19 @@ interface CreateTeamData {
 
 interface ActiveTeamRequest {
   teamId: number;
+}
+
+export interface TeamMember {
+  userId: number;
+  nickname: string;
+}
+
+export interface TeamDetail {
+  teamId: number;
+  teamName: string;
+  inviteCode: string;
+  totalBricks: number;
+  members: TeamMember[];
 }
 
 export function createTeam(teamName: string) {
@@ -45,4 +58,8 @@ export function updateActiveTeam(teamId: number) {
       teamId,
     }
   );
+}
+
+export function getTeamDetail(teamId: number) {
+  return apiGet<TeamDetail>(`/api/teams/${teamId}`);
 }
